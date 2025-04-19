@@ -1,13 +1,16 @@
 import Foundation
 
 struct Configuration {
-  let token: String
   let urlSession: URLSession
   let decoder: JSONDecoder
 
   init(token: String, urlSession: URLSession = .shared) {
-    self.token = token
-    self.urlSession = urlSession
+    var configuration = urlSession.configuration
+    configuration.httpAdditionalHeaders = [
+      "Authorization": "Bearer \(token)",
+      "Accept": "application/json",
+    ]
+    self.urlSession = URLSession(configuration: configuration)
     self.decoder = JSONDecoder()
   }
 }

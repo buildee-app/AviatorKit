@@ -8,14 +8,21 @@ class AviatorKitTests {
 
   init() {
     let configuration = Configuration(token: "SECRET_TOKEN", urlSession: MockedRequests.urlSession())
-    self.aviator = .init(configuration: configuration)
+    self.aviator = AviatorClient(configuration: configuration)
   }
 
   @Test
   func fetchesListOfRepositories() async throws {
-    let mock = Mock(url: URL(string: "https://api.aviator.co/api/v1/repo")!, contentType: .json, statusCode: 200, data: [
+    var mock = Mock(url: URL(string: "https://api.aviator.co/api/v1/repo")!, contentType: .json, statusCode: 200, data: [
       .get: MockedData.repositories,
     ])
+
+    mock.onRequestHandler = OnRequestHandler(httpBodyType: [[String: String]].self, callback: { request, _ in
+      let headers = try! #require(request.allHTTPHeaderFields)
+      #expect(headers["Accept"] == "application/json")
+      #expect(headers["Authorization"] == "Bearer SECRET_TOKEN")
+    })
+
     mock.register()
 
     let repositories = try await self.aviator.fetchRepositories()

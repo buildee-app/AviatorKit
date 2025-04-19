@@ -1,6 +1,10 @@
 import Foundation
 
-class Aviator {
+protocol Aviator {
+  func fetchRepositories() async throws -> [Repository]
+}
+
+class AviatorClient: Aviator {
   let configuration: Configuration
 
   init(configuration: Configuration) {
@@ -14,7 +18,7 @@ class Aviator {
     return try configuration.decoder.decode([Repository].self, from: data)
   }
 
-  private static func build(token: String) -> Aviator {
-    .init(configuration: .init(token: token))
+  public static func build(token: String) -> Aviator {
+    AviatorClient(configuration: .init(token: token))
   }
 }
