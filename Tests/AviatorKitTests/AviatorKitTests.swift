@@ -21,11 +21,11 @@ class AviatorKitTests {
     ])
 
     #if os(macOS)
-    mock.onRequestHandler = OnRequestHandler(httpBodyType: [[String: String]].self, callback: { request, _ in
-      let headers = try! #require(request.allHTTPHeaderFields)
-      #expect(headers["Accept"] == "application/json")
-      #expect(headers["Authorization"] == "Bearer SECRET_TOKEN")
-    })
+      mock.onRequestHandler = OnRequestHandler(httpBodyType: [[String: String]].self, callback: { request, _ in
+        let headers = try! #require(request.allHTTPHeaderFields)
+        #expect(headers["Accept"] == "application/json")
+        #expect(headers["Authorization"] == "Bearer SECRET_TOKEN")
+      })
     #endif
 
     mock.register()
