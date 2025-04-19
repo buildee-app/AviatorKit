@@ -2,6 +2,9 @@
 import Foundation
 import Mocker
 import Testing
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 class AviatorKitTests {
   let aviator: Aviator
@@ -17,11 +20,13 @@ class AviatorKitTests {
       .get: MockedData.repositories,
     ])
 
+    #if os(macOS)
     mock.onRequestHandler = OnRequestHandler(httpBodyType: [[String: String]].self, callback: { request, _ in
       let headers = try! #require(request.allHTTPHeaderFields)
       #expect(headers["Accept"] == "application/json")
       #expect(headers["Authorization"] == "Bearer SECRET_TOKEN")
     })
+    #endif
 
     mock.register()
 
