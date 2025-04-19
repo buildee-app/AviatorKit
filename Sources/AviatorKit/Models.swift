@@ -1,6 +1,6 @@
 import Foundation
 
-struct Repository: Decodable {
+public struct Repository: Decodable {
   let name: String
   let organisation: String
   let active: Bool

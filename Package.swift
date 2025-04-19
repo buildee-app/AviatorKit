@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
   name: "AviatorKit",
   platforms: [
-    .macOS(.v12),
+    .macOS(.v12)
   ],
   products: [
     .library(
